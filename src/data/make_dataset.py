@@ -24,6 +24,7 @@ logger.info('IN THE DATA INGESTION')
 
 def load_data(url:str) -> pd.DataFrame:
     df = pd.read_csv(url)
+    df = pd.read_csv(url)
     return df
 
 def param_load(path:str) -> float:
@@ -32,8 +33,8 @@ def param_load(path:str) -> float:
 
 def operation(df:pd.DataFrame)->pd.DataFrame:
     df.drop(columns=['tweet_id'],inplace=True)
-    final_df = df[df['sentiment'].isin(['happiness','sadness'])]
-    final_df['sentiment'].replace({'happiness':1, 'sadness':0},inplace=True)
+    final_df = df[df['sentiment'].isin(['happiness','neutral'])]
+    final_df['sentiment'].replace({'happiness':1, 'neutral':0},inplace=True)
     return final_df
 
 def save(path_,train_data,test_data) -> None:
