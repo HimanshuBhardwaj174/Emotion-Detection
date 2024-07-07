@@ -1,0 +1,42 @@
+stages:
+  data_ingestion:
+    cmd: python src/data/make_dataset.py
+    deps:
+    - src/data/make_dataset.py
+    params:
+    - data_ingestion.test_size
+    outs:
+    - data/raw
+  preprocessing:
+    cmd: python src/preprocessing/preprocessing.py
+    deps:
+    - data/raw
+    - src/preprocessing/preprocessing.py
+    outs:
+    - data/interim
+
+  feature_engineering:
+    cmd: python src/features/build_features.py
+    deps:
+    - data/interim
+    - src/features/build_features.py
+    params:
+    - feature_eng.max_features
+    outs:
+    - data/processed
+
+  Model_Building:
+    cmd: python src/models/train_model.py
+    deps: 
+    - data/processed
+    - src/models/train_model.py
+    outs:
+    - model
+
+  Evaluation:
+    cmd: python src/models/predict_model.py
+    deps:
+    - model
+    - src/models/predict_model.py
+    metrics:
+    - reports/metrics.json
